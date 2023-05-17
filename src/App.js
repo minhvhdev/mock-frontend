@@ -8,6 +8,8 @@ import CheckOutPage from './pages/CheckOutPage/CheckOutPage';
 import HomePage from './pages/HomePage/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
+import AdminPage from './pages/AdminPage/AdminPage';
+import Test from './components/test/Test';
 
 function App() {
   return (
@@ -24,6 +26,9 @@ function App() {
           </Route>
           <Route element={<PrivateRoute />}>
             <Route path="/checkout" element={<CheckOutPage />} />
+          </Route>
+          <Route element={<UnLoginRoute />}>
+            <Route path="/admin" element={<Test />} />
           </Route>
         </Routes>
       </WithMessage>

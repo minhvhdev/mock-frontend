@@ -25,6 +25,7 @@ const LoginPage = () => {
       password: Yup.string().required('Password is required')
     }),
     onSubmit: async (values) => {
+      console.log('abc');
       try {
         setIsLogging(true);
         const res = await userApi.login(values);
@@ -54,7 +55,7 @@ const LoginPage = () => {
         <Button className={styles.backButton} shape="circle" size="large" onClick={onClickBack}>
           <ArrowLeftOutlined />
         </Button>
-        <h1 className={styles.title}>Login Account</h1>
+        <h1 className={styles.title}>Sign-In</h1>
         <Spin spinning={isLogging}>
           <Form onFinish={formik.handleSubmit} className={styles.form}>
             <Form.Item {...validate('username')}>
@@ -83,9 +84,8 @@ const LoginPage = () => {
                 Register if you are not a member yet
               </Link>
             </Form.Item>
-
             <Button type="primary" htmlType="submit" block size="large">
-              Submit
+              Login
             </Button>
           </Form>
         </Spin>

@@ -38,7 +38,7 @@ const RegisterPage = () => {
         <Button className={styles.backButton} shape="circle" size="large" onClick={onClickBack}>
           <ArrowLeftOutlined />
         </Button>
-        <h1 className={styles.title}>Login Account</h1>
+        <h1 className={styles.title}>Sign-Up</h1>
         <Form onFinish={formik.handleSubmit} className={styles.form}>
           <Form.Item {...validate('username')}>
             <Input
@@ -74,7 +74,7 @@ const RegisterPage = () => {
           </Form.Item>
 
           <Button type="primary" htmlType="submit" block size="large">
-            Submit
+            Register
           </Button>
         </Form>
       </Col>

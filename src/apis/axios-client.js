@@ -2,11 +2,11 @@ import axios from 'axios';
 import { BASE_API_URL } from '../constants';
 
 export const getToken = () => {
-  const token = localStorage.get('token');
-  if (!token) {
+  const user = localStorage.getItem('user');
+  if (!user) {
     return null;
   }
-  return token.accessToken;
+  return user.token;
 };
 
 const AxiosClient = axios.create({
@@ -29,6 +29,7 @@ AxiosClient.interceptors.response.use(
     return response;
   },
   (error) => {
+    console.log(error);
     throw error;
   }
 );

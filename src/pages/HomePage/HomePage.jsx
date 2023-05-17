@@ -8,7 +8,6 @@ const HomePage = () => {
   return (
     <Layout className={styles.container}>
       <UserHeader />
-
       <Row justify="center">
         <Col span={22}>
           <Content>Content</Content>
