@@ -48,9 +48,6 @@ const UserHeader = () => {
         <Col span={22}>
           <div className={styles.content}>
             <div className={styles.logo}>{WEBSITE_NAME}</div>
-            <AutoComplete options={options} size="large" className={styles.search}>
-              <Search placeholder="Search" />
-            </AutoComplete>
             <Dropdown overlay={currentUser ? menuLogged : menuUnLogin}>
               <span className={styles.dropdown} onClick={(e) => e.preventDefault()}>
                 <UserOutlined />

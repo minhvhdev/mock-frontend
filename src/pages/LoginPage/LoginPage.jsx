@@ -10,6 +10,7 @@ import { MESSAGE_TYPE, WEBSITE_NAME } from '../../constants';
 import userApi from '../../apis/user';
 import useUser from '../../hooks/useUser';
 import { useMessageContext } from '../../contexts/WithMessage';
+import BackToHomeButton from '../../components/BackToHomeButton/BackToHomeButton';
 
 const LoginPage = () => {
   const navigate = useNavigate();
@@ -53,9 +54,7 @@ const LoginPage = () => {
         <h1 className={styles.title}>{WEBSITE_NAME}</h1>
       </Col>
       <Col span={10} className={styles.right}>
-        <Button className={styles.backButton} shape="circle" size="large" onClick={onClickBack}>
-          <ArrowLeftOutlined />
-        </Button>
+        <BackToHomeButton className={styles.backButton} />
         <h1 className={styles.title}>Sign-In</h1>
         <Spin spinning={isLogging}>
           <Form onFinish={formik.handleSubmit} className={styles.form}>

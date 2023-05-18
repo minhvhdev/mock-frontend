@@ -10,6 +10,7 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import AdminPage from './pages/AdminPage/AdminPage';
 import Test from './components/test/Test';
+import RoomDetailPage from './pages/RoomDetailPage/RoomDetailPage';
 
 function App() {
   return (
@@ -17,13 +18,17 @@ function App() {
       <WithMessage>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/room-detail/:id" element={<RoomDetailPage />} />
+
           <Route element={<UnLoginRoute />}>
             <Route path="/login" element={<LoginPage />} />
             <Route path="/register" element={<RegisterPage />} />
           </Route>
+
           <Route element={<AdminRoute />}>
-            <Route path="/checkout" element={<CheckOutPage />} />
+            <Route path="/checkout" element={<AdminPage />} />
           </Route>
+          
           <Route element={<PrivateRoute />}>
             <Route path="/checkout" element={<CheckOutPage />} />
           </Route>
