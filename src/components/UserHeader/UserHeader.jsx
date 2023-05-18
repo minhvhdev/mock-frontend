@@ -15,7 +15,7 @@ const menuUnLogin = (
       <Link to="/login">Sign In</Link>
     </Menu.Item>
     <Menu.Item>
-      <Link href="/register">Sign Up</Link>
+      <Link to="/register">Sign Up</Link>
     </Menu.Item>
   </Menu>
 );
@@ -23,6 +23,9 @@ const menuLogged = (
   <Menu>
     <Menu.Item>
       <Link to="/profile">Profile</Link>
+    </Menu.Item>
+    <Menu.Item>
+      <Link to="/login">Log Out</Link>
     </Menu.Item>
   </Menu>
 );
@@ -38,6 +41,7 @@ const UserHeader = () => {
       value: 'Option2'
     }
   ];
+
   return (
     <Header className={styles.header}>
       <Row justify="center">

@@ -6,24 +6,38 @@ import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import useValidateForm from '../../hooks/useValidateForm';
 import styles from './register-page.module.scss';
-import { WEBSITE_NAME } from '../../constants';
+import { MESSAGE_TYPE, WEBSITE_NAME } from '../../constants';
+import userApi from '../../apis/user';
+import { useMessageContext } from '../../contexts/WithMessage';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
+  const { pushMessage } = useMessageContext();
 
   const onClickBack = () => navigate('/');
 
   const formik = useFormik({
-    initialValues: { username: '', password: '', rePassword: '' },
+    initialValues: { name: '', email: '', phoneNumber: '', username: '', password: '', rePassword: '' },
     validationSchema: Yup.object({
-      username: Yup.string().required('username is required'),
+      name: Yup.string().required('Name is required'),
+      email: Yup.string().required('Email is required'),
+      phoneNumber: Yup.string().required('Phone Number is required'),
+      username: Yup.string().required('Username is required'),
       password: Yup.string().required('Password is required'),
       rePassword: Yup.string()
-        .oneOf([Yup.ref('password'), null], 'Passwords must match')
+        .oneOf([Yup.ref('password'), null], 'Password must match')
         .required('Required')
     }),
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      delete values.rePassword;
+      try {
+        const res = await userApi.register(values);
+        if (res.status === 200) {
+          pushMessage(MESSAGE_TYPE.SUCCESS, 'This is a success message!');
+        }
+      } catch (error) {
+        pushMessage(MESSAGE_TYPE.ERROR, error.response.data.message)
+      }
     }
   });
 
@@ -40,6 +54,33 @@ const RegisterPage = () => {
         </Button>
         <h1 className={styles.title}>Sign-Up</h1>
         <Form onFinish={formik.handleSubmit} className={styles.form}>
+          <Form.Item {...validate('name')}>
+            <Input
+              placeholder="Input name"
+              name="name"
+              onChange={formik.handleChange}
+              value={formik.values.name}
+              size="large"
+            />
+          </Form.Item>
+          <Form.Item {...validate('email')}>
+            <Input
+              placeholder="Input email"
+              name="email"
+              onChange={formik.handleChange}
+              value={formik.values.email}
+              size="large"
+            />
+          </Form.Item>
+          <Form.Item {...validate('phoneNumber')}>
+            <Input
+              placeholder="Input phone number"
+              name="phoneNumber"
+              onChange={formik.handleChange}
+              value={formik.values.phoneNumber}
+              size="large"
+            />
+          </Form.Item>
           <Form.Item {...validate('username')}>
             <Input
               placeholder="Input username"

@@ -25,7 +25,6 @@ const LoginPage = () => {
       password: Yup.string().required('Password is required')
     }),
     onSubmit: async (values) => {
-      console.log('abc');
       try {
         setIsLogging(true);
         const res = await userApi.login(values);
@@ -34,6 +33,8 @@ const LoginPage = () => {
           login(res.data);
         }
       } catch (error) {
+        console.log(error.response.data.message);
+        pushMessage(MESSAGE_TYPE.ERROR, error.response.data.message);
       } finally {
         setIsLogging(false);
       }
