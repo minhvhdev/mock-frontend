@@ -16,7 +16,7 @@ const HomePage = () => {
         setRooms(res.data);
       }
     } catch (error) {
-      console.err(error);
+      console.error(error);
     }
   };
 

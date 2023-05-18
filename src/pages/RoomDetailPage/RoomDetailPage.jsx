@@ -31,7 +31,7 @@ const RoomDetailPage = () => {
         setRoom(res.data);
       }
     } catch (error) {
-      console.err(error);
+      console.error(error);
     } finally {
       setLoading(false);
     }
