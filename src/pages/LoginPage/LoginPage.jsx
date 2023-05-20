@@ -1,4 +1,3 @@
-import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button, Checkbox, Col, Form, Input, Row, Spin } from 'antd';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
@@ -30,11 +29,11 @@ const LoginPage = () => {
         setIsLogging(true);
         const res = await userApi.login(values);
         if (res.status === 200) {
-          pushMessage(MESSAGE_TYPE.SUCCESS, 'This is a success message!');
+          pushMessage(MESSAGE_TYPE.SUCCESS, 'Login Successfull!');
           login(res.data);
         }
       } catch (error) {
-        console.log(error.response.data.message);
+        console.log(error);
         pushMessage(MESSAGE_TYPE.ERROR, error.response.data.message);
       } finally {
         setIsLogging(false);
@@ -84,7 +83,7 @@ const LoginPage = () => {
                 Register if you are not a member yet
               </Link>
             </Form.Item>
-            <Button type="primary" htmlType="submit" block size="large">
+            <Button htmlType="submit" block size="large">
               Login
             </Button>
           </Form>

@@ -1,4 +1,3 @@
-import { ArrowLeftOutlined } from '@ant-design/icons';
 import { Button, Col, Form, Input, Row } from 'antd';
 import { useFormik } from 'formik';
 import React from 'react';
@@ -9,12 +8,11 @@ import styles from './register-page.module.scss';
 import { MESSAGE_TYPE, WEBSITE_NAME } from '../../constants';
 import userApi from '../../apis/user';
 import { useMessageContext } from '../../contexts/WithMessage';
+import BackToHomeButton from '../../components/BackToHomeButton/BackToHomeButton';
 
 const RegisterPage = () => {
   const navigate = useNavigate();
   const { pushMessage } = useMessageContext();
-
-  const onClickBack = () => navigate('/');
 
   const formik = useFormik({
     initialValues: { name: '', email: '', phoneNumber: '', username: '', password: '', rePassword: '' },
@@ -36,7 +34,14 @@ const RegisterPage = () => {
           pushMessage(MESSAGE_TYPE.SUCCESS, 'This is a success message!');
         }
       } catch (error) {
-        pushMessage(MESSAGE_TYPE.ERROR, error.response.data.message)
+        if (Array.isArray(error.response.data)) {
+          error.response.data.forEach(e => {
+            pushMessage(MESSAGE_TYPE.ERROR, e)
+          })
+        } else {
+          pushMessage(MESSAGE_TYPE.ERROR, error.response.data.message)
+        }
+
       }
     }
   });
@@ -49,9 +54,7 @@ const RegisterPage = () => {
         <h1 className={styles.title}>{WEBSITE_NAME}</h1>
       </Col>
       <Col span={10} className={styles.right}>
-        <Button className={styles.backButton} shape="circle" size="large" onClick={onClickBack}>
-          <ArrowLeftOutlined />
-        </Button>
+        <BackToHomeButton className={styles.backButton} />
         <h1 className={styles.title}>Sign-Up</h1>
         <Form onFinish={formik.handleSubmit} className={styles.form}>
           <Form.Item {...validate('name')}>
@@ -114,7 +117,7 @@ const RegisterPage = () => {
             </Link>
           </Form.Item>
 
-          <Button type="primary" htmlType="submit" block size="large">
+          <Button htmlType="submit" block size="large">
             Register
           </Button>
         </Form>

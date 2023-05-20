@@ -28,12 +28,12 @@ function App() {
           <Route element={<AdminRoute />}>
             <Route path="/checkout" element={<AdminPage />} />
           </Route>
-          
+
           <Route element={<PrivateRoute />}>
             <Route path="/checkout" element={<CheckOutPage />} />
           </Route>
           <Route element={<UnLoginRoute />}>
-            <Route path="/admin" element={<Test />} />
+            <Route path="/admin" element={<AdminPage />} />
           </Route>
         </Routes>
       </WithMessage>
