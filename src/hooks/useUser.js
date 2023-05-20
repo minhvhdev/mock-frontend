@@ -5,10 +5,10 @@ const useUser = () => {
   const [currentUser, setCurrentUser] = useState(JSON.parse(localStorage.getItem('user')));
   const navigate = useNavigate();
 
-  const login = (data) => {
+  const login = (data, state) => {
     localStorage.setItem('user', JSON.stringify(data));
     setCurrentUser(data);
-    navigate(-1);
+    navigate(-1, { state });
   };
 
   const logout = () => {

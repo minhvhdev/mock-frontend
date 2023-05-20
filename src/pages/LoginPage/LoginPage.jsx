@@ -1,7 +1,7 @@
 import { Button, Checkbox, Col, Form, Input, Row, Spin } from 'antd';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import * as Yup from 'yup';
 import userApi from '../../apis/user';
 import BackToHomeButton from '../../components/BackToHomeButton/BackToHomeButton';
@@ -13,6 +13,7 @@ import styles from './login-page.module.scss';
 
 const LoginPage = () => {
   const { login } = useUser();
+  const location = useLocation();
   const { pushMessage } = useMessageContext();
   const [isRemember, setIsRemember] = useState(false);
   const [isLogging, setIsLogging] = useState(false);
@@ -29,7 +30,7 @@ const LoginPage = () => {
         const res = await userApi.login(values);
         if (res.status === 200) {
           pushMessage(MESSAGE_TYPE.SUCCESS, 'Login Successfull!');
-          login(res.data);
+          login(res.data, location.state);
         }
       } catch (error) {
         console.log(error);
