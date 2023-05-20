@@ -11,7 +11,11 @@ import RegisterPage from './pages/RegisterPage/RegisterPage';
 import AdminPage from './pages/AdminPage/AdminPage';
 import Test from './components/test/Test';
 import RoomDetailPage from './pages/RoomDetailPage/RoomDetailPage';
-
+import Dashboard from './components/Admin/Dashboard';
+import Room from './components/Admin/Room';
+import User from './components/Admin/User';
+import Account from './components/Admin/Account';
+import Booking from './components/Admin/Booking';
 function App() {
   return (
     <div className="App">
@@ -35,6 +39,13 @@ function App() {
           <Route element={<UnLoginRoute />}>
             <Route path="/admin" element={<Test />} />  
           </Route>
+          <Route path="/admin" element={<AdminPage />}>
+              <Route path="" element={<Dashboard />}/>
+              <Route path="room" element={<Room />}/>
+              <Route path="user" element={<User />}/>
+              <Route path="booking" element={<Booking />}/>
+              <Route path="account" element={<Account />}/>
+            </Route>
         </Routes>
       </WithMessage>
     </div>
