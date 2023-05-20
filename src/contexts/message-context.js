@@ -24,7 +24,7 @@ function reducer(state, action) {
 
 const MessageContext = createContext();
 
-const WithMessage = ({ children }) => {
+const MessageContextProvider = ({ children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const pushMessage = (status, content) => {
@@ -45,4 +45,4 @@ const WithMessage = ({ children }) => {
 
 const useMessageContext = () => useContext(MessageContext);
 
-export { WithMessage, useMessageContext };
+export { MessageContextProvider, useMessageContext };

@@ -1,21 +1,27 @@
 import { Button, Col, Form, Input, Row } from 'antd';
 import { useFormik } from 'formik';
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
+import userApi from '../../apis/user';
+import BackToHomeButton from '../../components/BackToHomeButton/BackToHomeButton';
+import { MESSAGE_TYPE, WEBSITE_NAME } from '../../constants';
+import { useMessageContext } from '../../contexts/message-context';
 import useValidateForm from '../../hooks/useValidateForm';
 import styles from './register-page.module.scss';
-import { MESSAGE_TYPE, WEBSITE_NAME } from '../../constants';
-import userApi from '../../apis/user';
-import { useMessageContext } from '../../contexts/WithMessage';
-import BackToHomeButton from '../../components/BackToHomeButton/BackToHomeButton';
 
 const RegisterPage = () => {
-  const navigate = useNavigate();
   const { pushMessage } = useMessageContext();
 
   const formik = useFormik({
-    initialValues: { name: '', email: '', phoneNumber: '', username: '', password: '', rePassword: '' },
+    initialValues: {
+      name: '',
+      email: '',
+      phoneNumber: '',
+      username: '',
+      password: '',
+      rePassword: ''
+    },
     validationSchema: Yup.object({
       name: Yup.string().required('Name is required'),
       email: Yup.string().required('Email is required'),
@@ -35,13 +41,12 @@ const RegisterPage = () => {
         }
       } catch (error) {
         if (Array.isArray(error.response.data)) {
-          error.response.data.forEach(e => {
-            pushMessage(MESSAGE_TYPE.ERROR, e)
-          })
+          error.response.data.forEach((e) => {
+            pushMessage(MESSAGE_TYPE.ERROR, e);
+          });
         } else {
-          pushMessage(MESSAGE_TYPE.ERROR, error.response.data.message)
+          pushMessage(MESSAGE_TYPE.ERROR, error.response.data.message);
         }
-
       }
     }
   });

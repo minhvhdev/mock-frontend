@@ -1,18 +1,17 @@
 import { Button, Checkbox, Col, Form, Input, Row, Spin } from 'antd';
 import { useFormik } from 'formik';
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as Yup from 'yup';
+import userApi from '../../apis/user';
+import BackToHomeButton from '../../components/BackToHomeButton/BackToHomeButton';
+import { MESSAGE_TYPE, WEBSITE_NAME } from '../../constants';
+import { useMessageContext } from '../../contexts/message-context';
+import useUser from '../../hooks/useUser';
 import useValidateForm from '../../hooks/useValidateForm';
 import styles from './login-page.module.scss';
-import { MESSAGE_TYPE, WEBSITE_NAME } from '../../constants';
-import userApi from '../../apis/user';
-import useUser from '../../hooks/useUser';
-import { useMessageContext } from '../../contexts/WithMessage';
-import BackToHomeButton from '../../components/BackToHomeButton/BackToHomeButton';
 
 const LoginPage = () => {
-  const navigate = useNavigate();
   const { login } = useUser();
   const { pushMessage } = useMessageContext();
   const [isRemember, setIsRemember] = useState(false);
@@ -44,8 +43,6 @@ const LoginPage = () => {
   const { validate } = useValidateForm(formik);
 
   const onChangeRememberCheckbox = (e) => setIsRemember(e.target.checked);
-
-  const onClickBack = () => navigate('/');
 
   return (
     <Row className={styles.container} align="middle">

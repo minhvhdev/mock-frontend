@@ -8,7 +8,7 @@ const useUser = () => {
   const login = (data) => {
     localStorage.setItem('user', JSON.stringify(data));
     setCurrentUser(data);
-    navigate('/', { replace: true });
+    navigate(-1);
   };
 
   const logout = () => {

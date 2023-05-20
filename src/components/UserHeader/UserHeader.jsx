@@ -1,62 +1,84 @@
-import React from 'react';
-import { Layout, Input, AutoComplete, Menu, Dropdown, Row, Col } from 'antd';
-import { UserOutlined } from '@ant-design/icons';
-import styles from './user-header.module.scss';
-import { WEBSITE_NAME } from '../../constants';
-import { Link } from 'react-router-dom';
+import {
+  HistoryOutlined,
+  LogoutOutlined,
+  MenuOutlined,
+  UserAddOutlined,
+  UserOutlined
+} from '@ant-design/icons';
+import React, { useMemo, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import useUser from '../../hooks/useUser';
-
-const { Header } = Layout;
-const { Search } = Input;
-
-const menuUnLogin = (
-  <Menu>
-    <Menu.Item>
-      <Link to="/login">Sign In</Link>
-    </Menu.Item>
-    <Menu.Item>
-      <Link to="/register">Sign Up</Link>
-    </Menu.Item>
-  </Menu>
-);
-const menuLogged = (
-  <Menu>
-    <Menu.Item>
-      <Link to="/profile">Profile</Link>
-    </Menu.Item>
-    <Menu.Item>
-      <Link to="/login">Log Out</Link>
-    </Menu.Item>
-  </Menu>
-);
+import styles from './user-header.module.scss';
 
 const UserHeader = () => {
-  const { currentUser } = useUser();
+  const { currentUser, logout } = useUser();
+  const [open, setOpen] = useState(false);
+  const navigate = useNavigate();
 
-  const options = [
-    {
-      value: 'Option1'
-    },
-    {
-      value: 'Option2'
-    }
-  ];
+  const maxHeight = useMemo(() => {
+    return currentUser ? '205px' : '155px';
+  }, [currentUser]);
+
+  const onClickUserIcon = () => setOpen(!open);
+  const onClickProfile = () => navigate('/profile');
+  const onClickHistory = () => navigate('/booking-history');
+  const onClickLogout = () => logout();
+  const onClickSignIn = () => navigate('/login');
+  const onClickSignOut = () => navigate('/register');
 
   return (
-    <Header className={styles.header}>
-      <Row justify="center">
-        <Col span={22}>
-          <div className={styles.content}>
-            <div className={styles.logo}>{WEBSITE_NAME}</div>
-            <Dropdown overlay={currentUser ? menuLogged : menuUnLogin}>
-              <span className={styles.dropdown} onClick={(e) => e.preventDefault()}>
-                <UserOutlined />
-              </span>
-            </Dropdown>
+    <>
+      <div className={open ? styles.overlay : ''} onClick={onClickUserIcon} />
+      <div className={styles.container}>
+        <div
+          className={styles.content}
+          onClick={onClickUserIcon}
+          style={{ maxHeight: open ? maxHeight : '50px' }}>
+          <div className={styles.menu}>
+            <span className={styles.icon}>
+              <MenuOutlined />
+            </span>
           </div>
-        </Col>
-      </Row>
-    </Header>
+          {currentUser ? (
+            <>
+              <div className={styles.item} onClick={onClickProfile}>
+                <span>Profile</span>
+                <span className={styles.icon}>
+                  <UserOutlined />
+                </span>
+              </div>
+              <div className={styles.item} onClick={onClickHistory}>
+                <span>Booking history</span>
+                <span className={styles.icon}>
+                  <HistoryOutlined />
+                </span>
+              </div>
+              <div className={styles.item} onClick={onClickLogout}>
+                <span>Logout</span>
+                <span className={styles.icon}>
+                  <LogoutOutlined />
+                </span>
+              </div>
+            </>
+          ) : (
+            <>
+              <div className={styles.item} onClick={onClickSignIn}>
+                <span>Sign in</span>
+                <span className={styles.icon}>
+                  <UserAddOutlined />
+                </span>
+              </div>
+              <div className={styles.item} onClick={onClickSignOut}>
+                <span>Sign up</span>
+                <span className={styles.icon}>
+                  <UserAddOutlined />
+                </span>
+              </div>
+            </>
+          )}
+        </div>
+      </div>
+    </>
   );
 };
 

@@ -1,40 +1,72 @@
-import { Button, Carousel, Col, Divider, Modal, Row, Spin, DatePicker, Select, Input } from 'antd';
+import {
+  faBanSmoking,
+  faMountainSun,
+  faMugSaucer,
+  faUtensils,
+  faWifi,
+  faWind
+} from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Button, Carousel, Col, DatePicker, Divider, Input, Modal, Row, Select, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import roomApi from '../../apis/room';
-import BackToHomeButton from '../../components/BackToHomeButton/BackToHomeButton';
+import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import { commaMoneyAmount } from '../../helpers';
 import useUser from '../../hooks/useUser';
 import styles from './room-detail-page.module.scss';
-import { faWifi, faUtensils, faMugSaucer, faWind, faBanSmoking, faMountainSun } from '@fortawesome/free-solid-svg-icons';
-
+import bookingApi from '../../apis/booking';
 
 const generateOptionPerson = (number) => {
-  const result = []
+  const result = [];
   for (let i = 0; i <= number; i++) {
-    result.push({ label: i, value: i })
+    result.push({ label: i, value: i });
   }
-  return result
-}
+  return result;
+};
+
+const { RangePicker } = DatePicker;
 
 const RoomDetailPage = () => {
+  const location = useLocation();
   const { currentUser } = useUser();
-  const { id } = useParams()
+  const { id } = useParams();
   const navigate = useNavigate();
-  const { RangePicker } = DatePicker;
   const [room, setRoom] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedRange, setSelectedRange] = useState(null);
   const [personNumber, setPersonNumber] = useState({ adults: 0, children: 0 });
 
+  useEffect(() => {
+    if (location.state) {
+      setSelectedRange(location.state.selectedRange);
+      setPersonNumber(location.state.personNumber);
+    }
+  }, [location.state]);
+
+  const submitBooking = async () => {
+    try {
+      setSubmitting(true);
+      await bookingApi.create(); // TODO change data
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const onClickBooking = () => {
     if (currentUser) {
-      navigate('/checkout', { state: {} });
+      submitBooking();
       return;
     }
     setOpenDialog(true);
+  };
+
+  const onOkModal = () => {
+    navigate('/login', { state: { selectedRange, personNumber } });
   };
 
   const handleChange = (value, type) => {
@@ -57,17 +89,18 @@ const RoomDetailPage = () => {
 
     for (let i = 0; i < totalPersons; i++) {
       inputElements.push(
-        <Input key={i} style={{ width: "100%", marginBottom: "10px " }} placeholder="Full name" />
+        <Input key={i} style={{ width: '100%', marginBottom: '10px ' }} placeholder="Full name" />
       );
     }
 
     return (
-      <div className={styles.personForm} style={totalPersons > 0 ? { display: "block" } : { display: "none" }}>
+      <div
+        className={styles.personForm}
+        style={totalPersons > 0 ? { display: 'block' } : { display: 'none' }}>
         {inputElements}
       </div>
     );
   };
-
 
   const handleRangeChange = (dates) => {
     setSelectedRange(dates);
@@ -103,7 +136,6 @@ const RoomDetailPage = () => {
   useEffect(() => {
     getRoom();
   }, []);
-
   return (
     <Spin spinning={loading}>
       <div className={styles.container}>
@@ -117,7 +149,7 @@ const RoomDetailPage = () => {
           </Carousel>
         </div>
         <div className={styles.content}>
-          <BackToHomeButton className={styles.backButton} />
+          <Breadcrumb currentPage="Room detail" />
           <Row gutter={54}>
             <Col span={14}>
               <div className={styles.name}>{room?.name}</div>
@@ -173,7 +205,9 @@ const RoomDetailPage = () => {
             </Col>
             <Col span={10}>
               <div className={styles.bookingForm}>
-                <div className={styles.personInBooking} style={currentUser ? { display: "" } : { display: "none" }}>
+                <div
+                  className={styles.personInBooking}
+                  style={currentUser ? { display: '' } : { display: 'none' }}>
                   <div className={styles.personCount}>
                     <div className={styles.title}>Information of people living with</div>
                     <Row justify="space-between">
@@ -186,7 +220,7 @@ const RoomDetailPage = () => {
                             <Select
                               defaultValue={0}
                               style={{ width: 55 }}
-                              onChange={value => handleChange(value, 'adults')}
+                              onChange={(value) => handleChange(value, 'adults')}
                               options={generateOptionPerson(room?.adultsMax)}
                             />
                           </Col>
@@ -201,7 +235,7 @@ const RoomDetailPage = () => {
                             <Select
                               defaultValue={0}
                               style={{ width: 55 }}
-                              onChange={value => handleChange(value, 'children')}
+                              onChange={(value) => handleChange(value, 'children')}
                               options={generateOptionPerson(room?.childrenMax)}
                             />
                           </Col>
@@ -212,12 +246,24 @@ const RoomDetailPage = () => {
                   {renderPersonForm()}
                   <Divider />
                 </div>
-                <Row className={styles.labelParent} justify="space-around" align='middle'>
-                  <Col className={styles.label} span={11}>Check in</Col>
-                  <Col className={styles.label} span={11}>Check out</Col>
+                <Row className={styles.labelParent} justify="space-around" align="middle">
+                  <Col className={styles.label} span={11}>
+                    Check in
+                  </Col>
+                  <Col className={styles.label} span={11}>
+                    Check out
+                  </Col>
                 </Row>
-                <RangePicker className={styles.rangePicker} size="large" onChange={handleRangeChange} />
-                <Row className={styles.totalPrice} justify="space-between" align="middle" style={selectedRange ? { display: "flex" } : { display: "none" }}>
+                <RangePicker
+                  className={styles.rangePicker}
+                  size="large"
+                  onChange={handleRangeChange}
+                />
+                <Row
+                  className={styles.totalPrice}
+                  justify="space-between"
+                  align="middle"
+                  style={selectedRange ? { display: 'flex' } : { display: 'none' }}>
                   <Col span={12}>
                     ${commaMoneyAmount(room?.price)} x {calculateDateRange().diffInDays} night(s)
                   </Col>
@@ -226,13 +272,15 @@ const RoomDetailPage = () => {
                   </Col>
                 </Row>
                 <Divider />
-                <Button
-                  type="text"
-                  size="large"
-                  className={styles.bookingBtn}
-                  onClick={onClickBooking}>
-                  Book This Room!
-                </Button>
+                <Spin spinning={submitting}>
+                  <Button
+                    type="text"
+                    size="large"
+                    className={styles.bookingBtn}
+                    onClick={onClickBooking}>
+                    Book This Room!
+                  </Button>
+                </Spin>
               </div>
             </Col>
           </Row>
@@ -241,7 +289,7 @@ const RoomDetailPage = () => {
       <Modal
         title="Do you want to login to booking this room?"
         open={openDialog}
-        onOk={() => navigate('/login')}
+        onOk={onOkModal}
         okButtonProps={{ type: 'text', className: styles.okButton }}
         onCancel={() => setOpenDialog(false)}
         okText="Of course!"
