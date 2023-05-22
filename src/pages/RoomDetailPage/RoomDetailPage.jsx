@@ -36,7 +36,7 @@ const RoomDetailPage = () => {
   const [loading, setLoading] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
-  const [selectedRange, setSelectedRange] = useState(null);
+  const [selectedRange, setSelectedRange] = useState();
   const [personNumber, setPersonNumber] = useState({ adults: 0, children: 0 });
 
   useEffect(() => {
@@ -258,6 +258,7 @@ const RoomDetailPage = () => {
                   className={styles.rangePicker}
                   size="large"
                   onChange={handleRangeChange}
+                  value={selectedRange}
                 />
                 <Row
                   className={styles.totalPrice}

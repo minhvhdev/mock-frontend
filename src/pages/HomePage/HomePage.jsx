@@ -1,5 +1,5 @@
 import { SearchOutlined } from '@ant-design/icons';
-import { Button, Carousel, Col, Form, Input, Row, Select, Spin } from 'antd';
+import { Button, Carousel, Col, DatePicker, Form, Input, Row, Spin } from 'antd';
 import { useFormik } from 'formik';
 import React, { useEffect, useState } from 'react';
 import roomApi from '../../apis/room';
@@ -8,10 +8,21 @@ import RoomCard from '../../components/RoomCard/RoomCard';
 import { WEBSITE_NAME } from '../../constants';
 import styles from './home-page.module.scss';
 
+const convertDate = (date) => {
+  const dateInput = new Date(date)
+  const year = dateInput.getFullYear();
+  const month = String(dateInput.getMonth() + 1).padStart(2, '0');
+  const day = String(dateInput.getDate()).padStart(2, '0');
+  return `${year}-${month}-${day}`
+}
 const HomePage = () => {
   const [rooms, setRooms] = useState([]);
-  const [typeOptions, setTypeOptions] = useState([]);
   const [searching, setSearching] = useState(false);
+  const [selectedRange, setSelectedRange] = useState();
+  const [maxAdults, setMaxAdults] = useState(0)
+  const [maxChildren, setMaxChildren] = useState(0)
+
+  const { RangePicker } = DatePicker;
 
   const getRooms = async () => {
     try {
@@ -27,21 +38,40 @@ const HomePage = () => {
     }
   };
 
-  const getTypeOptions = async () => {
+  const getmaxAdults = async () => {
     try {
-      const res = await roomApi.getTypeOptions();
+      const res = await roomApi.maxAdults()
       if (res.status === 200) {
-        setTypeOptions(res.data);
+        console.log(res.data);
+        setMaxAdults(res.data);
       }
     } catch (error) {
       console.error(error);
     }
+  }
+
+  const getmaxChildren = async () => {
+    try {
+      const res = await roomApi.maxChildren()
+      if (res.status === 200) {
+        setMaxChildren(res.data);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const handleRangeChange = (dates) => {
+    setSelectedRange(dates);
   };
 
+
   const formik = useFormik({
-    initialValues: { type: '', adultsMax: 1, childrenMax: 0 },
+    initialValues: { adultsMax: null, childrenMax: null, startDate: '', endDate: '' },
     onSubmit: async (values) => {
       try {
+        values.startDate = convertDate(selectedRange[0])
+        values.endDate = convertDate(selectedRange[1])
         setSearching(true);
         const res = await roomApi.search(values);
         if (res.status === 200) {
@@ -57,7 +87,8 @@ const HomePage = () => {
 
   useEffect(() => {
     getRooms();
-    getTypeOptions();
+    getmaxAdults();
+    getmaxChildren();
   }, []);
 
   return (
@@ -87,17 +118,12 @@ const HomePage = () => {
             <Form layout="vertical" onFinish={formik.handleSubmit} className={styles.form}>
               <Row justify="space-around" align="middle" gutter={30}>
                 <Col span={10}>
-                  <Form.Item label="Room type">
-                    <Select
-                      name="type"
+                  <Form.Item label="Date">
+                    <RangePicker
+                      className={styles.rangePicker}
+                      name="rangeDate"
                       size="large"
-                      className={styles.select}
-                      options={typeOptions.map((option) => ({
-                        value: option,
-                        label: option
-                      }))}
-                      onChange={formik.handleChange}
-                      value={formik.values.adultsMax}
+                      onChange={handleRangeChange}
                     />
                   </Form.Item>
                 </Col>
@@ -107,7 +133,7 @@ const HomePage = () => {
                       type="number"
                       name="adultsMax"
                       size="large"
-                      max={5}
+                      max={maxAdults}
                       min={0}
                       onChange={formik.handleChange}
                       value={formik.values.adultsMax}
@@ -120,7 +146,7 @@ const HomePage = () => {
                       type="number"
                       name="childrenMax"
                       size="large"
-                      max={5}
+                      max={maxChildren}
                       min={0}
                       onChange={formik.handleChange}
                       value={formik.values.childrenMax}

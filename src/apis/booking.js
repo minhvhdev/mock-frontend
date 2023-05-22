@@ -107,7 +107,7 @@ const bookingApi = {
             'A spacious suite designed for families, featuring separate bedrooms and a common living area.',
           adultsMax: 4,
           childrenMax: 2,
-          status: 'Available',
+          status: 'checked in',
           price: 250.0,
           images: [
             {

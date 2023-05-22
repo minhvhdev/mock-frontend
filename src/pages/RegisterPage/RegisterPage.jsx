@@ -1,7 +1,7 @@
 import { Button, Col, Form, Input, Row } from 'antd';
 import { useFormik } from 'formik';
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import userApi from '../../apis/user';
 import BackToHomeButton from '../../components/BackToHomeButton/BackToHomeButton';
@@ -12,6 +12,7 @@ import styles from './register-page.module.scss';
 
 const RegisterPage = () => {
   const { pushMessage } = useMessageContext();
+  const navigate = useNavigate();
 
   const formik = useFormik({
     initialValues: {
@@ -37,7 +38,8 @@ const RegisterPage = () => {
       try {
         const res = await userApi.register(values);
         if (res.status === 200) {
-          pushMessage(MESSAGE_TYPE.SUCCESS, 'This is a success message!');
+          pushMessage(MESSAGE_TYPE.SUCCESS, 'Registration successful!');
+          navigate('/')
         }
       } catch (error) {
         if (Array.isArray(error.response.data)) {

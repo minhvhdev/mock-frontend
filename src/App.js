@@ -12,7 +12,8 @@ import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import RoomDetailPage from './pages/RoomDetailPage/RoomDetailPage';
 import PublicRoute from './components/CustomRoute/PublicRoute';
-import BookingHistory from './pages/BookingHistory/BookingHistory';
+import BookingManagement from './pages/BookingManagement/BookingManagement';
+import RoomManagement from './pages/RoomManagement/RoomManagement';
 
 function App() {
   return (
@@ -36,7 +37,8 @@ function App() {
 
           <Route element={<PrivateRoute />}>
             <Route path="/checkout" element={<CheckOutPage />} />
-            <Route path="/booking-history" element={<BookingHistory />} />
+            <Route path="/room-management" element={<RoomManagement />} />
+            <Route path="/booking-management" element={<BookingManagement />} />
           </Route>
           <Route element={<UnLoginRoute />}>
             <Route path="/admin" element={<AdminPage />} />

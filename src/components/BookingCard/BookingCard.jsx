@@ -9,14 +9,14 @@ const BookingCard = ({ booking }) => {
   const onClickStatusButton = async () => {
     try {
       bookingApi.update(booking.id, statusLabel);
-    } catch (error) {}
+    } catch (error) { }
   };
 
   const statusLabel = useMemo(() => {
     switch (booking.status) {
       case 'Booked':
         return 'Check in';
-      case 'Checked in':
+      case 'check in':
         return 'Check out';
       default:
         return '';

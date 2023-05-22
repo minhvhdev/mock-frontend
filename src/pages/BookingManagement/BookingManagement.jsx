@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import styles from './booking-history.module.scss';
+import styles from './booking-management.module.scss';
 import bookingApi from '../../apis/booking';
 import useUser from '../../hooks/useUser';
 import { Col, Menu, Row, Spin } from 'antd';
@@ -10,16 +10,16 @@ import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 const BOOKING_STATUS_MENU_ITEM = [
   { label: 'Booked', key: 'booked' },
   {
-    label: 'Checked in',
-    key: 'checked in'
+    label: 'Check in',
+    key: 'check in'
   },
   {
-    label: 'Checked out',
-    key: 'checked out'
+    label: 'Check out',
+    key: 'check out'
   }
 ];
 
-const BookingHistory = () => {
+const BookingManagement = () => {
   const { currentUser } = useUser();
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -53,7 +53,7 @@ const BookingHistory = () => {
       </div>
       <Spin spinning={loading}>
         <div className={styles.content}>
-          <Breadcrumb currentPage="Booking history" />
+          <Breadcrumb currentPage="Booking management" />
           <Row>
             <Col span={7}>
               <Menu
@@ -82,4 +82,4 @@ const BookingHistory = () => {
   );
 };
 
-export default BookingHistory;
+export default BookingManagement;

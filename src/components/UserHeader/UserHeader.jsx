@@ -1,9 +1,11 @@
 import {
+  CalendarOutlined,
   HistoryOutlined,
   LogoutOutlined,
   MenuOutlined,
   UserAddOutlined,
-  UserOutlined
+  UserOutlined,
+  WalletOutlined
 } from '@ant-design/icons';
 import React, { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -20,8 +22,8 @@ const UserHeader = () => {
   }, [currentUser]);
 
   const onClickUserIcon = () => setOpen(!open);
-  const onClickProfile = () => navigate('/profile');
-  const onClickHistory = () => navigate('/booking-history');
+  const onClickRoom = () => navigate('/room-management')
+  const onClickBooking = () => navigate('/booking-management');
   const onClickLogout = () => logout();
   const onClickSignIn = () => navigate('/login');
   const onClickSignOut = () => navigate('/register');
@@ -41,16 +43,16 @@ const UserHeader = () => {
           </div>
           {currentUser ? (
             <>
-              <div className={styles.item} onClick={onClickProfile}>
-                <span>Profile</span>
+              <div className={styles.item} onClick={onClickRoom}>
+                <span>Room management</span>
                 <span className={styles.icon}>
-                  <UserOutlined />
+                  <WalletOutlined />
                 </span>
               </div>
-              <div className={styles.item} onClick={onClickHistory}>
-                <span>Booking history</span>
+              <div className={styles.item} onClick={onClickBooking}>
+                <span>Booking management</span>
                 <span className={styles.icon}>
-                  <HistoryOutlined />
+                  <CalendarOutlined />
                 </span>
               </div>
               <div className={styles.item} onClick={onClickLogout}>
