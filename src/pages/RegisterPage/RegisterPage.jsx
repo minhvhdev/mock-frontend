@@ -1,17 +1,15 @@
-import { Button, Col, Form, Input, Row } from 'antd';
+import { Button, Col, Form, Input, Row, message } from 'antd';
 import { useFormik } from 'formik';
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import userApi from '../../apis/user';
 import BackToHomeButton from '../../components/BackToHomeButton/BackToHomeButton';
-import { MESSAGE_TYPE, WEBSITE_NAME } from '../../constants';
-import { useMessageContext } from '../../contexts/message-context';
+import { WEBSITE_NAME } from '../../constants';
 import useValidateForm from '../../hooks/useValidateForm';
 import styles from './register-page.module.scss';
 
 const RegisterPage = () => {
-  const { pushMessage } = useMessageContext();
   const navigate = useNavigate();
 
   const formik = useFormik({
@@ -38,16 +36,16 @@ const RegisterPage = () => {
       try {
         const res = await userApi.register(values);
         if (res.status === 200) {
-          pushMessage(MESSAGE_TYPE.SUCCESS, 'Registration successful!');
-          navigate('/')
+          message.success('Registration successful!');
+          navigate('/');
         }
       } catch (error) {
         if (Array.isArray(error.response.data)) {
           error.response.data.forEach((e) => {
-            pushMessage(MESSAGE_TYPE.ERROR, e);
+            message.error(e);
           });
         } else {
-          pushMessage(MESSAGE_TYPE.ERROR, error.response.data.message);
+          message.error(error.response.data.message);
         }
       }
     }

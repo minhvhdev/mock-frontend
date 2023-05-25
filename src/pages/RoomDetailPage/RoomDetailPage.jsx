@@ -10,12 +10,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button, Carousel, Col, DatePicker, Divider, Input, Modal, Row, Select, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import bookingApi from '../../apis/booking';
 import roomApi from '../../apis/room';
 import Breadcrumb from '../../components/Breadcrumb/Breadcrumb';
 import { commaMoneyAmount } from '../../helpers';
 import useUser from '../../hooks/useUser';
 import styles from './room-detail-page.module.scss';
-import bookingApi from '../../apis/booking';
+import { useSelector } from 'react-redux';
 
 const generateOptionPerson = (number) => {
   const result = [];
@@ -28,7 +29,7 @@ const generateOptionPerson = (number) => {
 const { RangePicker } = DatePicker;
 
 const RoomDetailPage = () => {
-  const location = useLocation();
+  const bookingDate = useSelector((state) => state.bookingDate);
   const { currentUser } = useUser();
   const { id } = useParams();
   const navigate = useNavigate();
@@ -38,13 +39,6 @@ const RoomDetailPage = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedRange, setSelectedRange] = useState();
   const [personNumber, setPersonNumber] = useState({ adults: 0, children: 0 });
-
-  useEffect(() => {
-    if (location.state) {
-      setSelectedRange(location.state.selectedRange);
-      setPersonNumber(location.state.personNumber);
-    }
-  }, [location.state]);
 
   const submitBooking = async () => {
     try {
@@ -257,8 +251,9 @@ const RoomDetailPage = () => {
                 <RangePicker
                   className={styles.rangePicker}
                   size="large"
+                  disabled={bookingDate[0]}
                   onChange={handleRangeChange}
-                  value={selectedRange}
+                  value={selectedRange || bookingDate}
                 />
                 <Row
                   className={styles.totalPrice}

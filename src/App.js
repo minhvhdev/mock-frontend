@@ -2,23 +2,23 @@ import { Route, Routes } from 'react-router-dom';
 import './App.scss';
 import AdminRoute from './components/CustomRoute/AdminRoute';
 import PrivateRoute from './components/CustomRoute/PrivateRoute';
+import PublicRoute from './components/CustomRoute/PublicRoute';
 import UnLoginRoute from './components/CustomRoute/UnLoginRouter';
 import Test from './components/test/Test';
-import { MessageContextProvider } from './contexts/message-context';
 import AdminPage from './pages/AdminPage/AdminPage';
-import CheckOutPage from './pages/CheckOutPage/CheckOutPage';
+import BookingManagement from './pages/BookingManagement/BookingManagement';
 import HomePage from './pages/HomePage/HomePage';
 import LoginPage from './pages/LoginPage/LoginPage';
 import RegisterPage from './pages/RegisterPage/RegisterPage';
 import RoomDetailPage from './pages/RoomDetailPage/RoomDetailPage';
-import PublicRoute from './components/CustomRoute/PublicRoute';
-import BookingManagement from './pages/BookingManagement/BookingManagement';
 import RoomManagement from './pages/RoomManagement/RoomManagement';
+import { Provider } from 'react-redux';
+import store from './redux/store';
 
 function App() {
   return (
-    <div className="App">
-      <MessageContextProvider>
+    <Provider store={store}>
+      <div className="App">
         <Routes>
           <Route element={<PublicRoute />}>
             <Route path="/" element={<HomePage />} />
@@ -36,7 +36,6 @@ function App() {
           </Route>
 
           <Route element={<PrivateRoute />}>
-            <Route path="/checkout" element={<CheckOutPage />} />
             <Route path="/room-management" element={<RoomManagement />} />
             <Route path="/booking-management" element={<BookingManagement />} />
           </Route>
@@ -44,8 +43,8 @@ function App() {
             <Route path="/admin" element={<AdminPage />} />
           </Route>
         </Routes>
-      </MessageContextProvider>
-    </div>
+      </div>
+    </Provider>
   );
 }
 

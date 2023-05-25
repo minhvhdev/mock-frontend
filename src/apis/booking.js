@@ -27,143 +27,39 @@ const bookingApi = {
     return await AxiosClient.delete(url);
   },
 
-  getByUser: async (userId) => {
-    const url = `/bookings/user/${userId}`;
+  getByStatus: async (status) => {
+    const url = `/bookings/${status}`;
     return mockApi([
       {
-        id: 1,
-        room: {
-          id: 6,
-          name: 'Family Suite',
-          type: 'Deluxe',
-          description:
-            'A spacious suite designed for families, featuring separate bedrooms and a common living area.',
-          adultsMax: 4,
-          childrenMax: 2,
-          status: 'Available',
-          price: 250.0,
-          images: [
-            {
-              id: 22,
-              imageUrl:
-                'https://images.unsplash.com/photo-1533759413974-9e15f3b745ac?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1934&q=70'
-            },
-            {
-              id: 23,
-              imageUrl:
-                'https://images.unsplash.com/photo-1501876725168-00c445821c9e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=70'
-            },
-            {
-              id: 24,
-              imageUrl:
-                'https://images.unsplash.com/photo-1501876725168-00c445821c9e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=70'
-            }
-          ]
-        },
-        user: {
-          id: 2,
-          name: 'Khoa Tran Phuoc',
-          email: 'khoa@fpt.com',
-          phoneNumber: '1234567890',
-          username: 'admin',
-          roles: [
-            {
-              id: 1,
-              name: 'ROLE_ADMIN'
-            }
-          ]
-        },
-        price: 150.0,
-        checkInDate: '2023-06-01T00:00:00.000+00:00',
-        checkOutDate: '2023-06-05T00:00:00.000+00:00',
-        adultsNumber: 2,
-        childrenNumber: 1,
-        status: 'Booked',
-        personList: [
-          {
-            id: 1,
-            name: 'John Doe',
-            phoneNumber: '1234567890'
-          },
-          {
-            id: 2,
-            name: 'Jane Doe',
-            phoneNumber: '9876543210'
-          },
-          {
-            id: 3,
-            name: 'Adam',
-            phoneNumber: ''
-          }
-        ]
+        id: '1',
+        roomName: 'Deluxe Room',
+        customer: 'John Doe',
+        email: 'johndoe@example.com',
+        phoneNumber: '123-456-7890',
+        checkInDate: '2023-05-01',
+        checkOutDate: '2023-05-05',
+        price: 100
       },
       {
-        id: 2,
-        room: {
-          id: 6,
-          name: 'Family Suite',
-          type: 'Deluxe',
-          description:
-            'A spacious suite designed for families, featuring separate bedrooms and a common living area.',
-          adultsMax: 4,
-          childrenMax: 2,
-          status: 'checked in',
-          price: 250.0,
-          images: [
-            {
-              id: 22,
-              imageUrl:
-                'https://images.unsplash.com/photo-1533759413974-9e15f3b745ac?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1934&q=70'
-            },
-            {
-              id: 23,
-              imageUrl:
-                'https://images.unsplash.com/photo-1501876725168-00c445821c9e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=70'
-            },
-            {
-              id: 24,
-              imageUrl:
-                'https://images.unsplash.com/photo-1501876725168-00c445821c9e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=70'
-            }
-          ]
-        },
-        user: {
-          id: 2,
-          name: 'Khoa Tran Phuoc',
-          email: 'khoa@fpt.com',
-          phoneNumber: '1234567890',
-          username: 'admin',
-          roles: [
-            {
-              id: 1,
-              name: 'ROLE_ADMIN'
-            }
-          ]
-        },
-        price: 150.0,
-        checkInDate: '2023-06-01T00:00:00.000+00:00',
-        checkOutDate: '2023-06-05T00:00:00.000+00:00',
-        adultsNumber: 2,
-        childrenNumber: 1,
-        status: 'Booked',
-        personList: [
-          {
-            id: 1,
-            name: 'John Doe',
-            phoneNumber: '1234567890'
-          },
-          {
-            id: 2,
-            name: 'Jane Doe',
-            phoneNumber: '9876543210'
-          },
-          {
-            id: 3,
-            name: 'Adam',
-            phoneNumber: ''
-          }
-        ]
+        id: '2',
+        roomName: 'Standard Room',
+        customer: 'Jane Smith',
+        email: 'janesmith@example.com',
+        phoneNumber: '234-567-8901',
+        checkInDate: '2023-06-01',
+        checkOutDate: '2023-06-03',
+        price: 80
       },
+      {
+        id: '3',
+        roomName: 'Suite Room',
+        customer: 'Bob Johnson',
+        email: 'bobjohnson@example.com',
+        phoneNumber: '345-678-9012',
+        checkInDate: '2023-07-01',
+        checkOutDate: '2023-07-07',
+        price: 150
+      }
     ]);
     return await AxiosClient.get(url);
   }

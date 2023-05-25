@@ -1,10 +1,8 @@
 import {
   CalendarOutlined,
-  HistoryOutlined,
   LogoutOutlined,
   MenuOutlined,
   UserAddOutlined,
-  UserOutlined,
   WalletOutlined
 } from '@ant-design/icons';
 import React, { useMemo, useState } from 'react';
