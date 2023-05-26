@@ -1,5 +1,6 @@
 import {
   CalendarOutlined,
+  HomeOutlined,
   LogoutOutlined,
   MenuOutlined,
   UserAddOutlined,
@@ -16,10 +17,11 @@ const UserHeader = () => {
   const navigate = useNavigate();
 
   const maxHeight = useMemo(() => {
-    return currentUser ? '205px' : '155px';
+    return currentUser ? '255px' : '155px';
   }, [currentUser]);
 
   const onClickUserIcon = () => setOpen(!open);
+  const onClickHome = () => navigate('/')
   const onClickRoom = () => navigate('/room-management')
   const onClickBooking = () => navigate('/booking-management');
   const onClickLogout = () => logout();
@@ -41,6 +43,12 @@ const UserHeader = () => {
           </div>
           {currentUser ? (
             <>
+              <div className={styles.item} onClick={onClickHome}>
+                <span>Home</span>
+                <span className={styles.icon}>
+                  <HomeOutlined />
+                </span>
+              </div>
               <div className={styles.item} onClick={onClickRoom}>
                 <span>Room management</span>
                 <span className={styles.icon}>

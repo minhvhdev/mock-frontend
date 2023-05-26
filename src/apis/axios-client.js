@@ -6,6 +6,7 @@ export const getToken = () => {
   if (!user) {
     return null;
   }
+  console.log(user.token);
   return user.token;
 };
 

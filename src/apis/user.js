@@ -4,7 +4,6 @@ import AxiosClient from './axios-client';
 const userApi = {
   login: async (data) => {
     const url = '/auth/login';
-    return mockApi({ name: 'minh' });
     return await AxiosClient.post(url, data);
   },
 

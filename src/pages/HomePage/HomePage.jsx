@@ -77,23 +77,29 @@ const HomePage = () => {
       console.error(error);
     }
   };
-  const navigate = useNavigate();
   const handleRangeChange = (dates) => {
     setSelectedRange(dates);
     dispatch(changeBookingDate(dates));
-    navigate('/room-detail/2');
   };
 
   const formik = useFormik({
     initialValues: { adultsMax: null, childrenMax: null, startDate: '', endDate: '' },
     onSubmit: async (values) => {
       try {
-        values.startDate = convertDate(selectedRange[0]);
-        values.endDate = convertDate(selectedRange[1]);
-        setSearching(true);
-        const res = await roomApi.search(values);
-        if (res.status === 200) {
-          setRooms(res.data);
+        if (selectedRange && selectedRange.length === 2) {
+          values.startDate = convertDate(selectedRange[0]);
+          values.endDate = convertDate(selectedRange[1]);
+          setSearching(true);
+          const res = await roomApi.search(values);
+          if (res.status === 200) {
+            setRooms(res.data);
+          }
+        } else {
+          setSearching(true);
+          const res = await roomApi.getAll();
+          if (res.status === 200) {
+            setRooms(res.data);
+          }
         }
       } catch (error) {
         console.error(error);
@@ -142,6 +148,7 @@ const HomePage = () => {
                       name="rangeDate"
                       size="large"
                       onChange={handleRangeChange}
+                      disabledDate={(current) => current && current < moment().startOf('day')}
                     />
                   </Form.Item>
                 </Col>

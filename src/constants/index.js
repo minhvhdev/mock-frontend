@@ -53,6 +53,44 @@ export const BOOKING_TABLE_COLUMNS = [
     key: 'checkOutDate'
   },
   {
+    title: 'Status',
+    dataIndex: 'status',
+    key: 'status'
+  },
+  {
+    title: 'Price',
+    dataIndex: 'price',
+    key: 'price'
+  }
+];
+
+export const ROOM_TABLE_COLUMNS = [
+  {
+    title: 'Room Name',
+    dataIndex: 'name',
+    key: 'name'
+  },
+  {
+    title: 'Type',
+    dataIndex: 'type',
+    key: 'type'
+  },
+  {
+    title: 'Description',
+    dataIndex: 'description',
+    key: 'description'
+  },
+  {
+    title: 'Adults max',
+    dataIndex: 'adultsMax',
+    key: 'adultsMax'
+  },
+  {
+    title: 'Children max',
+    dataIndex: 'childrenMax',
+    key: 'childrenMax'
+  },
+  {
     title: 'Price',
     dataIndex: 'price',
     key: 'price'
