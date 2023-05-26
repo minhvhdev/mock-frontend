@@ -7,7 +7,7 @@ import {
   faWind
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Button, Carousel, Col, DatePicker, Divider, Input, Modal, Row, Select, Spin } from 'antd';
+import { Button, Carousel, Col, DatePicker, Divider, Input, message, Modal, Row, Select, Spin } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import bookingApi from '../../apis/booking';
@@ -67,8 +67,11 @@ const RoomDetailPage = () => {
   const submitBooking = async () => {
     try {
       setSubmitting(true);
-      console.log(dataBooking);
-      // await bookingApi.create(); // TODO change data
+      const res = await bookingApi.create(dataBooking);
+      if (res.status === 201) {
+        message.success('Booking successful!');
+        navigate('/booking-management');
+      }
     } catch (error) {
       console.error(error);
     } finally {
@@ -122,7 +125,6 @@ const RoomDetailPage = () => {
   const handleInputChange = (event, index) => {
     const { name, value } = event.target
     if (index === null) {
-      console.log(value);
       setDataBooking(prevState => ({
         ...prevState,
         [name]: value
@@ -189,9 +191,9 @@ const RoomDetailPage = () => {
   };
 
   const calculateDateRange = () => {
-    if (bookingDate && bookingDate[0] && bookingDate[1]) {
-      const start = bookingDate[0].startOf('day');
-      const end = bookingDate[1].startOf('day');
+    if (selectedRange && selectedRange[0] && selectedRange[1]) {
+      const start = selectedRange[0].startOf('day');
+      const end = selectedRange[1].startOf('day');
       const diffInDays = end.diff(start, 'days');
       return diffInDays;
     }
@@ -221,7 +223,7 @@ const RoomDetailPage = () => {
       ...prevState,
       price: room?.price * calculateDateRange()
     }))
-  }, [calculateDateRange()]);
+  }, [room?.price, selectedRange]);
 
   return (
     <Spin spinning={loading}>
@@ -237,7 +239,6 @@ const RoomDetailPage = () => {
         </div>
         <div className={styles.content}>
           <Breadcrumb currentPage="Room detail" />
-          {console.log(bookingDate)}
           <Row gutter={54}>
             <Col span={14}>
               <div className={styles.name}>{room?.name}</div>

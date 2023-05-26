@@ -25,22 +25,23 @@ export const BOOKING_TABLE_COLUMNS = [
   {
     title: 'Room Name',
     dataIndex: 'roomName',
-    key: 'roomName'
+    key: 'roomName',
+    render: (text, record) => record.room.name
   },
   {
     title: 'Customer',
-    dataIndex: 'customer',
-    key: 'customer'
+    dataIndex: 'customerName',
+    key: 'customerName'
   },
   {
     title: 'Email',
-    dataIndex: 'email',
-    key: 'email'
+    dataIndex: 'customerEmail',
+    key: 'customerEmail'
   },
   {
     title: 'Phone Number',
-    dataIndex: 'phoneNumber',
-    key: 'phoneNumber'
+    dataIndex: 'customerPhoneNumber',
+    key: 'customerPhoneNumber'
   },
   {
     title: 'Check-in Date',

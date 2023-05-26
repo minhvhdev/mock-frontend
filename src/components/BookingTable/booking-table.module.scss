@@ -1,5 +1,12 @@
-
-.search{
-    width: 300px;
-    margin-bottom: 20px;
+.headers {
+    .search {
+        height: 40px;
+        width: 250px;
+    }
+    .rangePicker {
+        height: 40px;
+    }
+    .exportBtn {
+        height: 40px;
+    }
 }

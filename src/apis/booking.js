@@ -17,9 +17,9 @@ const bookingApi = {
     return await AxiosClient.post(url, data);
   },
 
-  update: async (id, data) => {
+  update: async (id, status) => {
     const url = `/bookings/${id}`;
-    return await AxiosClient.put(url, data);
+    return await AxiosClient.put(url, null, { params: { status } });
   },
 
   delete: async (id) => {
@@ -38,6 +38,7 @@ const bookingApi = {
         phoneNumber: '123-456-7890',
         checkInDate: '2023-05-01',
         checkOutDate: '2023-05-05',
+        status: 'booked',
         price: 100
       },
       {
@@ -48,6 +49,7 @@ const bookingApi = {
         phoneNumber: '234-567-8901',
         checkInDate: '2023-06-01',
         checkOutDate: '2023-06-03',
+        status: 'checked in',
         price: 80
       },
       {
@@ -58,6 +60,7 @@ const bookingApi = {
         phoneNumber: '345-678-9012',
         checkInDate: '2023-07-01',
         checkOutDate: '2023-07-07',
+        status: 'checked out',
         price: 150
       }
     ]);
